@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Deterministic>False</Deterministic>
+    <RepositoryUrl>https://github.com/RobertLeisner/Bodoconsult.Core.Database.SqlClient</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageId>Bodoconsult.Core.Database.SqlClient</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Robert Leisner</Authors>
+    <Company>Bodoconsult EDV-Dienstleistungen GmbH</Company>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>System.Data Datatable SQL exec Sqlite DataReader</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>Simple .NET database layer for Sqlite based on System.Data intended for mainly read-only data access i.e. for reporting purposes or similar read-only data access</Description>
+    <PackageReleaseNotes>First draft.</PackageReleaseNotes>
+    <PackageProjectUrl>https://github.com/RobertLeisner/Bodoconsult.Core.Database.SqlClient</PackageProjectUrl>
+
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Bodoconsult.Core.Database" Version="1.0.8" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="5.0.0" />
+  </ItemGroup>
+
+</Project>

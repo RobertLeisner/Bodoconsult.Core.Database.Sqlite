@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Samples\**" />
+    <EmbeddedResource Remove="Samples\**" />
+    <None Remove="Samples\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\Chinook_Sqlite.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Chinook_Sqlite.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Bodoconsult.Core.Database" Version="1.0.8" />
+    <PackageReference Include="NUnit" Version="3.12.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Bodoconsult.Core.Database.Sqlite\Bodoconsult.Core.Database.Sqlite.csproj" />
+  </ItemGroup>
+
+</Project>
