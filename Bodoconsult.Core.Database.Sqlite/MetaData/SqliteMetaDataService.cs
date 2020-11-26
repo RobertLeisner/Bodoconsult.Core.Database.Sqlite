@@ -329,8 +329,10 @@ namespace Bodoconsult.Core.Database.Sqlite.MetaData
         {
             var erg = new StringBuilder();
 
+            var nullValues = field.DatabaseType == typeof(string) ? "?? \"\" " : "";
+
             erg.AppendLine($"// Parameter @{field.Name}");
-            erg.AppendLine($"p = new SqliteParameter(\"@{field.Name}\", {GetFieldTypeFromType(field.DatabaseType)}) {{ Value = item.{field.Name} }};");
+            erg.AppendLine($"p = new SqliteParameter(\"@{field.Name}\", {GetFieldTypeFromType(field.DatabaseType)}) {{ Value = item.{field.Name} {nullValues}}};");
             erg.AppendLine($"cmd.Parameters.Add(p); ");
             erg.AppendLine("");
 

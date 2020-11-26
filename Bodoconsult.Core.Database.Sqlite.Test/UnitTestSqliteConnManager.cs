@@ -228,7 +228,7 @@ namespace Bodoconsult.Core.Database.Sqlite.Test
         public void TestExecFromSql()
         {
 
-            const string sql = "DELETE FROM Customer WHERE CustomerId=-99";
+            const string sql = "DELETE FROM \"Customer\" WHERE \"CustomerId\"=-99";
 
             Assert.DoesNotThrow(() => _db.Exec(sql));
         }
