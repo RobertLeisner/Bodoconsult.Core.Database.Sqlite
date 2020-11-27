@@ -275,13 +275,19 @@ namespace Bodoconsult.Core.Database.Sqlite
                 {
                     conn.Open();
 
-                    for (index = 0; index < commands.Count; index++)
+                    using (var transaction = conn.BeginTransaction())
                     {
-                        var cmd = commands[index];
-                        cmd.Connection = conn;
-                        if (_commandTimeOut != -1)
-                            cmd.CommandTimeout = _commandTimeOut;
-                        cmd.ExecuteNonQuery();
+
+                        for (index = 0; index < commands.Count; index++)
+                        {
+                            var cmd = commands[index];
+                            cmd.Connection = conn;
+                            if (_commandTimeOut != -1)
+                                cmd.CommandTimeout = _commandTimeOut;
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        transaction.Commit();
                     }
 
                     conn.Close();

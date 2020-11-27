@@ -7,14 +7,14 @@
     <RepositoryUrl>https://github.com/RobertLeisner/Bodoconsult.Core.Database.Sqlite</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageId>Bodoconsult.Core.Database.Sqlite</PackageId>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <Authors>Robert Leisner</Authors>
     <Company>Bodoconsult EDV-Dienstleistungen GmbH</Company>
     <RepositoryType>git</RepositoryType>
     <PackageTags>System.Data Datatable SQL exec Sqlite DataReader</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Simple .NET database layer for Sqlite based on System.Data intended for mainly read-only data access i.e. for reporting purposes or similar read-only data access</Description>
-    <PackageReleaseNotes>Some bugfixes for metadata infrastrukture</PackageReleaseNotes>
+    <PackageReleaseNotes>Better performance for SqliteConnManager.ExecMultiple and some bugfixes</PackageReleaseNotes>
     <PackageProjectUrl>https://github.com/RobertLeisner/Bodoconsult.Core.Database.Sqlite</PackageProjectUrl>
 
   </PropertyGroup>
