@@ -70,7 +70,10 @@ namespace Bodoconsult.Core.Database.Sqlite.MetaData
 
                 //Debug.Print(colItem.SourceDataType);
 
-                if (col.ColumnSize != null) colItem.MaxLength = (int)col.ColumnSize;
+                if (col.ColumnSize != null)
+                {
+                    colItem.MaxLength = (int)col.ColumnSize;
+                }
 
                 table.Fields.Add(colItem);
             }

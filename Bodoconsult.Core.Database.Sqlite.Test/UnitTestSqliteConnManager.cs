@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.IO;
 using Bodoconsult.Core.Database.Sqlite.Test.Helpers;
+using Bodoconsult.Core.Database.Sqlite.Test.MetaDataSample;
 using Microsoft.Data.Sqlite;
 using NUnit.Framework;
 
@@ -318,6 +320,36 @@ namespace Bodoconsult.Core.Database.Sqlite.Test
             var result = _db.ExecMultiple(commands);
 
             Assert.IsTrue(result == 0);
+        }
+
+        [TestCase(1278)]
+        [TestCase(220)]
+        [TestCase(5)]
+        public void TestExecMultipleWithNewRow(int runs)
+        {
+            const string sql = "SELECT COUNT(*) FROM \"Customer\"";
+
+            var count1 = Convert.ToInt32(_db.ExecWithResult(sql));
+
+            var commands = new List<DbCommand>();
+
+            var i = 0;
+            for (var index = 1; index < runs; index++)
+            {
+                commands.Add(TestDataHelper.AddNewCommand(count1+index));
+                i++;
+            }
+
+
+            var result = _db.ExecMultiple(commands);
+
+            Assert.IsTrue(result == 0);
+
+            var count2 = Convert.ToInt32(_db.ExecWithResult(sql));
+            Assert.IsTrue(count2==count1+i);
+            
+            _db.Exec($"DELETE FROM \"Customer\" WHERE \"CustomerId\">{count1}");
+
         }
 
 

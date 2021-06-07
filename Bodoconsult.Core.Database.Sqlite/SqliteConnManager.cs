@@ -104,7 +104,9 @@ namespace Bodoconsult.Core.Database.Sqlite
             conn.Open();
             var cmd = new SqliteCommand(sql, conn);
             if (_commandTimeOut != -1)
+            {
                 cmd.CommandTimeout = _commandTimeOut;
+            }
             var reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
             if (reader == null) return null;
@@ -129,10 +131,15 @@ namespace Bodoconsult.Core.Database.Sqlite
 
             cmd.Connection = conn;
             if (_commandTimeOut != -1)
+            {
                 cmd.CommandTimeout = _commandTimeOut;
+            }
             var reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
-            if (reader == null) return null;
+            if (reader == null)
+            {
+                return null;
+            }
 
             var dt = new DataTable();
             dt.Load(reader);
@@ -153,7 +160,9 @@ namespace Bodoconsult.Core.Database.Sqlite
             {
                 var cmd = new SqliteCommand(sql, conn);
                 if (_commandTimeOut != -1)
+                {
                     cmd.CommandTimeout = _commandTimeOut;
+                }
                 cmd.Connection.Open();
                 var reader = cmd.ExecuteReader();
                 if (reader.HasRows)
@@ -184,7 +193,9 @@ namespace Bodoconsult.Core.Database.Sqlite
             {
                 var cmd = new SqliteCommand(sql, conn);
                 if (_commandTimeOut != -1)
+                {
                     cmd.CommandTimeout = _commandTimeOut;
+                }
                 cmd.Connection.Open();
                 cmd.ExecuteNonQuery();
                 conn.Close();
@@ -202,7 +213,9 @@ namespace Bodoconsult.Core.Database.Sqlite
             {
                 var cmd = new SqliteCommand(sql, conn);
                 if (_commandTimeOut != -1)
+                {
                     cmd.CommandTimeout = _commandTimeOut;
+                }
                 cmd.Connection.Open();
                 object value = cmd.ExecuteScalar();
                 conn.Close();
@@ -227,7 +240,9 @@ namespace Bodoconsult.Core.Database.Sqlite
                     //if (SendStatus != null) conn.InfoMessage += ConnOnInfoMessage;
                     cmd.Connection = conn;
                     if (_commandTimeOut != -1)
+                    {
                         cmd.CommandTimeout = _commandTimeOut;
+                    }
                     cmd.Connection.Open();
                     var value = cmd.ExecuteScalar();
                     conn.Close();
@@ -253,7 +268,9 @@ namespace Bodoconsult.Core.Database.Sqlite
             {
                 cmd.Connection = conn;
                 if (_commandTimeOut != -1)
+                {
                     cmd.CommandTimeout = _commandTimeOut;
+                }
                 cmd.Connection.Open();
                 cmd.ExecuteNonQuery();
                 conn.Close();
@@ -267,7 +284,7 @@ namespace Bodoconsult.Core.Database.Sqlite
         /// <returns>0 if there was no error, command's index if there was an error</returns>
         public override int ExecMultiple(IList<DbCommand> commands)
         {
-            var index = 0;
+            var index = 1;
 
             try
             {
@@ -275,20 +292,45 @@ namespace Bodoconsult.Core.Database.Sqlite
                 {
                     conn.Open();
 
-                    using (var transaction = conn.BeginTransaction())
-                    {
+                    var transaction = conn.BeginTransaction();
 
-                        for (index = 0; index < commands.Count; index++)
+
+
+                    //using (var transaction = conn.BeginTransaction())
+                    //{
+
+                    for (index = 0; index < commands.Count; index++)
+                    {
+                        if (index % NotifyProgressSteps == 0)
                         {
-                            var cmd = commands[index];
-                            cmd.Connection = conn;
-                            if (_commandTimeOut != -1)
-                                cmd.CommandTimeout = _commandTimeOut;
-                            cmd.ExecuteNonQuery();
+                            NotifyProgress?.Invoke(index);
                         }
 
-                        transaction.Commit();
+
+
+                        if (index > 0 && index % 50 == 0)
+                        {
+                            transaction.Commit();
+                            transaction.Dispose();
+                            transaction = conn.BeginTransaction();
+                        }
+
+
+                        var cmd = commands[index];
+                        cmd.Connection = conn;
+                        cmd.Transaction = transaction;
+                        if (_commandTimeOut != -1)
+                        {
+                            cmd.CommandTimeout = _commandTimeOut;
+                        }
+                        cmd.ExecuteNonQuery();
                     }
+
+                    transaction.Commit();
+                    transaction.Dispose();
+
+
+                    //}
 
                     conn.Close();
                 }
@@ -313,7 +355,9 @@ namespace Bodoconsult.Core.Database.Sqlite
             conn.Open();
             var cmd = new SqliteCommand(sql, conn);
             if (_commandTimeOut != -1)
+            {
                 cmd.CommandTimeout = _commandTimeOut;
+            }
             var dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             return dr;
         }
@@ -332,7 +376,9 @@ namespace Bodoconsult.Core.Database.Sqlite
             cmd.Connection = conn;
 
             if (_commandTimeOut != -1)
+            {
                 cmd.CommandTimeout = _commandTimeOut;
+            }
             var dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             return dr;
         }
@@ -433,10 +479,6 @@ namespace Bodoconsult.Core.Database.Sqlite
                 default:
                     throw new ArgumentOutOfRangeException(nameof(dataType), dataType, null);
             }
-
-
-
-            throw new ArgumentException($"Type not implemented: {dataType}");
         }
     }
 }
