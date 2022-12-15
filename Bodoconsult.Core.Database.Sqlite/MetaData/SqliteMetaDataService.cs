@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright (c) Bodoconsult EDV-Dienstleistungen GmbH. All rights reserved.
+
+using System;
 using System.Data.Common;
 using System.Linq;
 using System.Text;
